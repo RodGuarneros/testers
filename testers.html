@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mejor Mercado · Guía para Testers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --green:#082B17;     /* Primario */
+      --cream:#FFFEEC;     /* Fondo cálido */
+      --mint:#AEF0CA;      /* Acento */
+      --ink:#222;          /* Texto principal */
+      --gray:#6B7280;      /* Texto secundario */
+      --red:#E11D48;       /* Botones/alertas */
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; background:var(--cream); color:var(--ink); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;}
+    a{color:var(--green); text-decoration:none}
+    .container{width:min(1100px, 92vw); margin:0 auto}
+
+    /* Ajusta el tamaño del título (puedes subirlo si quieres) */
+    .brand h1{
+      font-family: Montserrat, Inter, sans-serif;
+      font-size: clamp(22px, 2.4vw, 28px); /* <-- cambia aquí si lo quieres más grande */
+      letter-spacing: .6px;
+      margin: 0;
+      color: var(--green);
+      line-height: 1.1;
+    }
+
+    /* Haz que el logo tenga la MISMA altura visual que el título */
+    .brand .logo-img{
+      height: 5.87em;   /* 1em = tamaño del font del h1; 1.1em lo hace un pelín más alto que el texto */
+      width: auto;      /* mantiene proporción */
+      object-fit: contain;
+      display: block;
+      border-radius: 19px;  /* si lo quieres redondo al 100%, usa 50% */
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+      border: 2px solid #0b4428;
+      background: #fff;
+    }
+
+    /* Header */
+    header{position:sticky; top:0; z-index:20; backdrop-filter:saturate(1.2) blur(6px); background:color-mix(in srgb, var(--cream) 86%, white 14%); border-bottom:1px solid #eae6d8}
+    .nav{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand .logo{width:40px; height:40px; border-radius:50%; background:radial-gradient(ellipse at 30% 30%, #ff5a5a, #bb0a1e); display:grid; place-items:center; box-shadow:0 6px 18px rgba(0,0,0,.12)}
+    .brand h1{font-family:Montserrat, Inter, sans-serif; font-size:18px; letter-spacing:.6px; margin:0; color:var(--green)}
+    .nav a.btn{padding:10px 16px; border-radius:999px; font-weight:600; border:1.5px solid var(--green)}
+    .nav a.btn.primary{background:var(--green); color:#fff; border-color:transparent}
+
+    /* Hero */
+    .hero{padding:64px 0 28px; display:grid; grid-template-columns:1.15fr .85fr; gap:26px; align-items:center}
+    .hero h2{font-family:Montserrat; font-size:clamp(28px, 3.2vw, 44px); line-height:1.05; color:var(--green); margin:0 0 10px}
+    .kicker{display:inline-flex; align-items:center; gap:10px; background:var(--mint); color:var(--green); padding:8px 14px; border-radius:999px; font-weight:600; margin-bottom:18px}
+    .hero p{font-size:18px; color:#2b2b2b; margin:0 0 18px}
+    .hero .cta{display:flex; gap:12px; flex-wrap:wrap}
+    .hero .card{background:white; border:1px solid #ebebeb; border-radius:var(--radius); padding:16px; box-shadow:0 8px 28px rgba(0,0,0,.06)}
+    .mock{border-radius:22px; overflow:hidden; border:10px solid #0b4428; outline:1px solid #123d28; background:#000}
+    /* ↓↓↓ Reducir imagen del hero al 60% y centrar ↓↓↓ */
+    .mock img{display:block; width:60% !important; height:auto; margin:0 auto}
+
+    /* Section */
+    section{padding:44px 0}
+    h3.section-title{font-family:Montserrat; font-size:26px; margin:0 0 14px; color:var(--green)}
+    p.section-lead{color:var(--gray); margin:0 0 22px}
+
+    /* Steps */
+    .steps{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+    .step{grid-column:span 6; background:white; border-radius:var(--radius); border:1px solid #eaeaea; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,.05)}
+    .step header{position:relative; background:linear-gradient(180deg, #ffffff, #fff8ee); border-bottom:1px solid #eee}
+    .step header .pill{position:absolute; top:16px; left:16px; background:var(--green); color:#fff; font-weight:700; padding:6px 12px; border-radius:999px; font-size:12px; letter-spacing:.5px}
+    .step .shot{padding:14px; background:var(--cream)}
+    /* ↓↓↓ Reducir imágenes de pasos al 60% y centrar ↓↓↓ */
+    .step .shot img{width:60% !important; border-radius:14px; display:block; height:auto; margin:0 auto}
+    .step .content{padding:16px 18px 20px}
+    .step .content h4{margin:0 0 8px; color:var(--green)}
+    .step .content p{margin:0; color:#303030}
+
+    /* Value cards */
+    .grid{display:grid; grid-template-columns:repeat(12,1fr); gap:18px}
+    .card{grid-column:span 4; background:white; padding:18px; border-radius:var(--radius); border:1px solid #ece9dc; box-shadow:0 8px 24px rgba(0,0,0,.05)}
+    .card h4{margin:0 0 8px; color:var(--green)}
+    .card p{margin:0; color:#333}
+
+    /* Feedback */
+    .feedback{display:grid; grid-template-columns:1.1fr .9fr; gap:18px; align-items:center}
+    .feedback .box{background:white; border:1px solid #ece9dc; border-radius:var(--radius); padding:18px}
+    ul{padding-left:18px}
+
+    /* ↓↓↓ Reducir imágenes de la sección Descarga (QR, etc.) al 60% y centrar ↓↓↓ */
+    #descarga .card img{width:60% !important; height:auto; display:block; margin:0 auto; border-radius:12px}
+
+    /* Footer */
+    footer{padding:32px 0 60px; color:var(--gray)}
+
+    /* Responsiveness */
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr;}
+      .steps .step{grid-column:span 12}
+      .grid .card{grid-column:span 12}
+      .feedback{grid-template-columns:1fr}
+    }
+
+    /* Opcional: en pantallas muy pequeñas vuelve a 100% para mejor legibilidad */
+    @media (max-width: 520px){
+      .mock img,
+      .step .shot img,
+      #descarga .card img{
+        width:100% !important;
+      }
+    }
+
+    /* Estilo base de botón fuera del nav (por si no estaba) */
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:12px 18px; border-radius:999px; font-weight:700;
+  border:1.5px solid var(--green); color:var(--green); background:#fff;
+  text-decoration:none; transition:transform .12s ease, box-shadow .2s ease, background .2s ease;
+}
+
+/* Botón de descarga distintivo */
+.btn.download{
+  color:#fff; border:none;
+  background:linear-gradient(135deg, var(--green), #0b4428);
+  box-shadow:0 12px 28px rgba(8,43,23,.25), inset 0 0 0 2px rgba(255,255,255,.08);
+  position:relative;
+}
+.btn.download:hover{ transform:translateY(-1px); box-shadow:0 16px 32px rgba(8,43,23,.3) }
+.btn.download:active{ transform:translateY(0) }
+
+/* Anillo de pulso suave */
+.btn.download::after{
+  content:""; position:absolute; inset:-6px; border-radius:999px;
+  box-shadow:0 0 0 0 rgba(174,240,202,.85);
+  animation:pulse 1.8s ease-out infinite;
+}
+
+/* Manita animada */
+.btn.download .hand{ display:inline-block; transform-origin:70% 70%; animation:hand-wiggle 1.2s ease-in-out infinite }
+
+/* Tipografía del texto del botón */
+.btn.download .label{ letter-spacing:.2px }
+
+/* Animaciones */
+@keyframes pulse{
+  0%{ box-shadow:0 0 0 0 rgba(174,240,202,.85) }
+  70%{ box-shadow:0 0 0 16px rgba(174,240,202,0) }
+  100%{ box-shadow:0 0 0 0 rgba(174,240,202,0) }
+}
+@keyframes hand-wiggle{
+  0%,100%{ transform:rotate(0deg) translateY(0) }
+  25%{ transform:rotate(-8deg) translateY(-1px) }
+  50%{ transform:rotate(6deg) translateY(0) }
+  75%{ transform:rotate(-4deg) translateY(1px) }
+}
+
+/* Responsive: que no se desborde en pantallas muy pequeñas */
+@media (max-width:520px){
+  .btn{ width:100%; justify-content:center }
+}
+
+/* Contenedor de la imagen: sin padding y ajustado al tamaño de la imagen */
+.mock{
+  display: inline-block;          /* se encoge al contenido */
+  padding: 0;                     /* sin padding extra */
+  line-height: 0;                 /* elimina el espacio bajo la imagen */
+  border: 10px solid #0b4428;
+  outline: 1px solid #123d28;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #000;
+
+  /* Si quieres que la imagen se vea 40% más pequeña que antes,
+     controla el ancho AQUÍ (no en el <img>): */
+  width: 60%;
+  /* Quita la línea de width:60% en .mock img si la tenías */
+}
+
+/* La imagen llena el contenedor exactamente, sin huecos */
+.mock img{
+  display: block;        /* elimina el gap por baseline */
+  width: 100% !important;/* ocupa el 100% del contenedor .mock */
+  height: auto;
+  border: 0;             /* sin bordes del lado de la imagen */
+}
+
+/* Opcional: centrar el contenedor dentro de su grid/columna */
+.hero .mock{
+  margin: 0 auto;       /* centra el bloque si quieres */
+}
+
+/* Logo sin borde */
+.brand .logo-img{
+  border: 0 !important;      /* quita el borde */
+  background: transparent;    /* opcional: sin fondo blanco */
+  /* si también quieres sin sombra, descomenta: */
+  /* box-shadow: none !important; */
+
+}
+
+/* Botón primario en rojo oscuro con texto blanco */
+.btn.primary{
+  background: #7a0f1b;      /* rojo oscuro */
+  color: #fff;              /* texto blanco */
+  border-color: #7a0f1b;
+}
+.btn.primary:hover{
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+.btn.primary:active{
+  transform: translateY(0);
+}
+
+/* Centrar el botón */
+.center-cta { text-align: center; }
+
+/* Botón con manos animadas */
+.wiggle-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Manitas con animación */
+.wiggle-btn .hand{
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: hand-wiggle 1.2s ease-in-out infinite;
+}
+.wiggle-btn .hand:first-child{ animation-delay: 0s; }
+.wiggle-btn .hand:last-child{ animation-delay: .2s; transform-origin: 30% 70%; }
+
+/* Keyframes del movimiento */
+@keyframes hand-wiggle{
+  0%,100% { transform: rotate(0deg) translateY(0); }
+  25%     { transform: rotate(-12deg) translateY(-1px); }
+  50%     { transform: rotate(8deg) translateY(0); }
+  75%     { transform: rotate(-6deg) translateY(1px); }
+}
+
+
+</style>
+
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <img class="logo-img" src="../sources/LOGO_FINAL.png" alt="Mejor Mercado logo"
+           onerror="this.style.border='0px solid red'; this.alt='No se encontró LOGO_FINAL.png';">
+      <h1>App Mejor Mercado — Guía para Testers</h1>
+    </div>
+    <nav style="display:flex; gap:10px;">
+      <a class="btn" href="#como-funciona">¿Cómo funciona?</a>
+      <a class="btn" href="#pasos">Pasos</a>
+      <a class="btn primary" href="#feedback">Enviar feedback</a>
+    </nav>
+  </div>
+</header>
+
+
+
+  <main>
+    <!-- HERO -->
+    <section class="hero container">
+      <div>
+        <div class="kicker">Misma calidad · Sin filas · Sin cargar</div>
+        <h2>Compra fresco, local y a mejor precio<br/>desde tu celular.</h2>
+        <p>
+          Tu app para pedir frutas y verduras de tu puesto favorito. Paga por transferencia en el puesto, arma tu lista de mercado, guarda puestos favoritos y recibe a domicilio.
+        </p>
+<div class="cta">
+  <a class="card" href="#pasos">Para comenzar:</a>
+
+  <a class="btn download" href="https://descarga_app.mindharvest.com" target="_blank" rel="noopener" aria-label="Descargar la App Móvil">
+    <span class="hand" aria-hidden="true">👉</span>
+    <span class="label">Descarga la App</span>
+  </a>
+</div>
+
+        <div class="card" style="margin-top:14px">
+          <strong>¿Qué va a hacer esta App por ti?</strong>
+          <ul>
+            <li>Mejor precio, calidad y frescura que el súper. Como si fueras a tu mercado favorito.</li>
+            <li>Transferencia electrónica en el puesto, sin efectivo ni comisiones.</li>
+            <li>Pedidos cuando y donde quieras; guarda tu lista y repite tus compras.</li>
+            <li>Puestos favoritos de tu colonia directo a tu casa. <br> <br><strong>No te cobramos comisión por tus compras, las otras plataformas sí.</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mock">
+        <!-- Imagen 8: botón verde “Escanea el QR de tu puesto” -->
+        <img src="imagen1.jpeg" alt="Inicio de la App Móvil" />
+      </div>
+    </section>
+
+    <!-- VALOR -->
+    <section class="container">
+      <h3 class="section-title">Beneficios rápidos</h3>
+      <p class="section-lead">¿Por qué es una App para ti?</p>
+      <div class="grid">
+        <div class="card"><h4>Local y fresco</h4><p>Mejor sabor, más calidad y duración a menor precio. Apoyas a tu mercado local. <br><br><strong>Somos lo que comemos: ¡No comas viejo o congelado!</strong></p></div>
+        <div class="card"><h4>Pago simple</h4><p>Transfiere en el puesto, sin efectivo y sin comisiones bancarias. <br> <br> <strong>¡No proporcionas tus datos bancarios!</strong></p></div>
+        <div class="card"><h4>A domicilio</h4><p>Agenda tu pedido y elige el horario preferido de entrega, puedes pagar en efectivo o transferencia. <br> <br> <strong>¡No proporcionas tus datos bancarios!</strong></p></div>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section id="como-funciona" class="container">
+      <h3 class="section-title">¿Cómo funciona?</h3>
+      <p class="section-lead">Dos pasos para vincular tu App con un puesto y empezar a pedir.</p>
+      <div class="steps">
+        <!-- Paso 1 -->
+        <article class="step">
+          <header><span class="pill">PASO 1</span></header>
+          <div class="shot"><img src="imagen1.jpeg" alt="Ejemplo de pantalla al vincular"/></div>
+          <div class="content">
+            <h4>Descarga e instala</h4>
+            <p>Si estás en el puesto, escanea el código QR para descargar la App. Permite ubicación y cámara para una experiencia completa.</p>
+          </div>
+        </article>
+        <!-- Paso 2 -->
+        <article class="step">
+  <header><span class="pill">PASO 2</span></header>
+
+  <!-- Puesto 1 -->
+  <figure class="shot">
+    <br>
+    <br>
+    <div class="shot-title">Puesto 1 - Coyoacán</div>
+    <img src="imagen2.png" alt="QR Puesto 1 — Mario Coyoacán">
+  </figure>
+
+  <!-- Puesto 2 (deja la ruta de ejemplo y cámbiala por tu imagen real) -->
+  <figure class="shot">
+    <div class="shot-title">Puesto 2 - San Ángel</div>
+    <img src="imagen4.png" alt="QR Puesto 2">
+  </figure>
+
+  <div class="content">
+    <h4>Escanea el QR del puesto</h4>
+    <p>Una vez instalada la App, presiona el botón verde que dice “Escanea el QR de tu puesto” y apunta al QR del puesto que te guste. Cada socio de Mejor Mercado tendrá su QR disponible y a la vista.</p>
+  </div>
+</article>
+
+      </div>
+      <div class="card" style="margin-top:16px">
+        <strong>Casi listo:</strong> Ahora ya tienes un puesto vinculado a tu cuenta. Puedes añadir todos los puestos que quieras con el botón “Añadir puesto”.
+      </div>
+    </section>
+
+    <!-- PASOS DETALLADOS CON TUS IMÁGENES -->
+    <section id="pasos" class="container">
+      <h3 class="section-title">Flujo guiado</h3>
+      <p class="section-lead">Cada tarjeta corresponde a una pantalla real de tu app.</p>
+      <div class="steps">
+        <article class="step">
+          <header><span class="pill">AÑADIR PUESTO</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen3.jpeg" alt="Añadir puesto"/></div>
+          <div class="content">
+            <h4>Escanea más puestos</h4>
+            <p>Presiona “Añadir puesto” para escanear y guardar los que te encanten.</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">MIS PUESTOS FAVORITOS</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen5.jpeg" alt="Lista de puestos favoritos"/></div>
+          <div class="content">
+            <h4>Elige tu favorito</h4>
+            <p>Desde “Ver mis puestos” selecciona a cuál entrar. La App se sincroniza con ese puesto para que lo visites virtualmente.</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">PAGO O ENVÍO</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen6.jpeg" alt="Transferencia o pedido digital"/></div>
+          <div class="content">
+            <h4>Transferencia o Pedido Digital</h4>
+            <p>En el puesto, usa “Datos de Transferencia”. Para domicilio, “Haz tu pedido digital”.</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">REGISTRO / LOGIN</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen7.jpeg" alt="Pantalla de registro o inicio de sesión"/></div>
+          <div class="content">
+            <h4>Acceso de prueba</h4>
+            <p>Puedes crear tu usuario o usar la cuenta de prueba (Usuario: <strong>RodGuarneros</strong> · Password: <strong>Mayo2025*</strong>).</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">CATÁLOGO</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen11.jpeg" alt="Catálogo y promociones"/></div>
+          <div class="content">
+            <h4>Explora el puesto</h4>
+            <p>Consulta promociones y entra al catálogo para armar tu pedido.</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">PRODUCTO</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen9.jpeg" alt="Selector de Kg o pieza"/></div>
+          <div class="content">
+            <h4>Elige por Kg, pieza o domo</h4>
+            <p>Ajusta cantidades con controles intuitivos. La lista de tu pedido y los montos se calculan al momento.</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">RESUMEN Y PAGO</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen10.jpeg" alt="Resumen y forma de pago"/></div>
+          <div class="content">
+            <h4>Resumen de pedido</h4>
+            <p>Elige efectivo (con cambio) o transferencia, y define tu horario preferido de entrega. El domicilio de entrega corresponde al de tu perfil, puedes moficiarlo cuando gustes.</p>
+          </div>
+        </article>
+        <article class="step">
+          <header><span class="pill">DETALLE</span></header>
+          <br>
+          <br>
+          <div class="shot"><img src="imagen12.jpeg" alt="Detalle de pedido"/></div>
+          <div class="content">
+            <h4>Confirma o cancela</h4>
+            <p>Recibe el detalle y, si lo necesitas, tienes 5 minutos para cancelar. <br><br> El puesto se pondrá en contacto contigo para confirmar tu pedido por el medio que le indicaste: WhatsApp, Correo Electrónico o Llamada. <br> <br> <strong>¡Puedes hacer más pedidos cuando quieras!</strong></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+    <!-- FEEDBACK -->
+    <section id="feedback" class="container feedback">
+      <div class="box">
+        <h3 class="section-title">Feedback que buscamos</h3>
+        <ul>
+          <li>¿El escaneo y la vinculación fueron claros?</li>
+          <li>¿Entendiste las unidades (Kg, pieza, caja) y los totales?</li>
+          <li>¿Resumen y pago/horario fueron intuitivos?</li>
+          <li>¿Qué mejorarías visual o funcionalmente?</li>
+        </ul>
+        <p class="section-lead">Reporta bugs con: modelo de teléfono, versión de Android, pasos para reproducir, resultado actual/esperado y captura.</p>
+      </div>
+<div class="box">
+  <h3 class="section-title">Enviar comentarios</h3>
+  <p>Usa este formulario:</p>
+
+  <p class="center-cta">
+    <a class="btn primary wiggle-btn"
+       href="https://forms.gle/Aksv6wBDtPNRKFJ39"
+       target="_blank" rel="noopener">
+      <span class="label">Abrir Formulario de Feedback</span>
+    </a>
+  </p>
+
+  <p style="color:var(--gray)">Gracias por tu tiempo 🙌</p>
+</div>
+
+
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div style="display:flex; align-items:center; gap:10px; color:var(--gray)">
+        <span>© <a href="https://mindharvestai.com/" target="_blank" rel="noopener">MindHarvestAI</a> · Mejor Mercado</span>
+<span style="opacity:.6">·</span>
+        <a href="https://mindharvestai.com/política-de-privacidad">Política de Privacidad</a>
+        <span style="opacity:.6">·</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
