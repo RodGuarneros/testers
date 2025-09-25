@@ -244,6 +244,12 @@
   75%     { transform: rotate(-6deg) translateY(1px); }
 }
 
+.nav .btn{
+  display: inline-flex;      /* ya lo usas, lo reafirmamos */
+  align-items: center;       /* centra vertical */
+  justify-content: center;   /* centra horizontal */
+  text-align: center;        /* por si hay salto de línea */
+}
 
 </style>
 
@@ -252,7 +258,7 @@
 <header>
   <div class="container nav">
     <div class="brand">
-      <img class="logo-img" src="../sources/LOGO_FINAL.png" alt="Mejor Mercado logo"
+      <img class="logo-img" src="LOGO_FINAL.png" alt="Mejor Mercado logo"
            onerror="this.style.border='0px solid red'; this.alt='No se encontró LOGO_FINAL.png';">
       <h1>App Mejor Mercado — Guía para Testers</h1>
     </div>
